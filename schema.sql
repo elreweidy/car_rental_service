@@ -4,7 +4,7 @@ USE car_rental_system;
 CREATE TABLE vehicles (
   vehicle_id INT NOT NULL AUTO_INCREMENT,
   category VARCHAR(20) NOT NULL,
-  available VARCHAR(20) DEFAULT 'YES',
+  available VARCHAR(20) DEFAULT 'Yes',
   CHECK (available IN ('Yes', 'No')),
   PRIMARY KEY (vehicle_id)
 );
@@ -34,8 +34,10 @@ CREATE TABLE invoices (
   booking_id INT NOT NULL,
   amount DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (invoice_id),
+  UNIQUE (booking_id),
   FOREIGN KEY (booking_id) REFERENCES bookings(booking_id)
 );
+
 
 -- To insert data into tables, we can use the INSERT INTO statement
 

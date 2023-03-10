@@ -82,6 +82,7 @@ def get_customer(id):
         return jsonify({"message": "Customer not found"}), 404
 
 
+## TODO: update this function's logic
 @app.route("/bookings", methods=["POST"])
 def add_booking():
     data = request.get_json()
@@ -121,20 +122,18 @@ def add_booking():
     query = "INSERT INTO bookings (customer_id, vehicle_id, hire_date, return_date) VALUES (%s, %s, %s, %s)"
     values = (customer_id, vehicle_id, hire_date, return_date)
     cursor.execute(query, values)
-    db.commit()
 
     # Update vehicle availability
     query = "UPDATE vehicles SET available='No' WHERE vehicle_id=%s"
     values = (vehicle_id,)
     cursor.execute(query, values)
-    db.commit()
 
     # Create invoice
     query = "SELECT * FROM customers WHERE customer_id=%s"
     values = (customer_id,)
     cursor.execute(query, values)
     customer = cursor.fetchone()
-    query = "SELECT * FROM vehicles WHERE customer_id=%s"
+    query = "SELECT * FROM vehicles WHERE vehicle_id=%s"
     values = (vehicle_id,)
     cursor.execute(query, values)
     vehicle = cursor.fetchone()
@@ -155,7 +154,7 @@ def add_booking():
         "vehicle_rental_rate": vehicle_rental_rate,
         "total_rental_amount": total_rental_amount,
     }
-    query = "INSERT INTO invoice (customer_id, vehicle_id, hire_date, return_date, rental_days, vehicle_rental_rate, total_rental_amount) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    query = "INSERT INTO invoices (vehicle_id, hire_date, return_date, rental_days, vehicle_rental_rate, total_rental_amount) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     values = (
         customer_id,
         vehicle_id,
@@ -166,7 +165,8 @@ def add_booking():
         total_rental_amount,
     )
     cursor.execute(query, values)
-    db.commit()
+    db.commit() # commit once to garuntee that this is an atomic transcation exection of make new booking and update availability
+ 
 
     return (
         jsonify(
