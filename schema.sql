@@ -1,5 +1,3 @@
-# using MYSQL workbench 8.0 CE
-
 CREATE DATABASE car_rental_system;
 USE car_rental_system;
 
@@ -15,8 +13,10 @@ CREATE TABLE customers (
   customer_id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(50) NOT NULL,
   email VARCHAR(50) NOT NULL,
+  address VARCHAR(100),
   PRIMARY KEY (customer_id)
 );
+
 
 CREATE TABLE bookings (
   booking_id INT NOT NULL AUTO_INCREMENT,
