@@ -1,3 +1,5 @@
+# using MYSQL workbench 8.0 CE
+
 CREATE DATABASE car_rental_system;
 USE car_rental_system;
 
